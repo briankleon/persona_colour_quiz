@@ -25,7 +25,7 @@ def main():
                 "Analyze all aspects before deciding": "Blue"
             }
         },
-               {
+        {
             "question": "My decision-making style is best described as:",
             "options": {
                 "Quick and decisive": "Red",
@@ -96,7 +96,7 @@ def main():
                 "A steady and supportive environment": "Green",
                 "Detailed explanations and data": "Blue"
             }
-        }
+        },
     ]
 
     scores = {"Red": 0, "Yellow": 0, "Green": 0, "Blue": 0}
@@ -127,7 +127,20 @@ def main():
         sorted_percentages = dict(sorted(percentages.items(), key=lambda item: item[1], reverse=True))
         dominant_color = list(sorted_percentages.keys())[0]
 
-        st.success(f"Your dominant personality color is: **{dominant_color}**")
+        # Map personality color to actual color
+        color_map = {
+            "Red": "red",
+            "Yellow": "gold",
+            "Green": "green",
+            "Blue": "blue"
+        }
+        result_color = color_map[dominant_color]
+
+        # Display result with dynamic color
+        st.markdown(
+            f'<p style="color:{result_color}; font-size:24px;">Your dominant personality color is: <b>{dominant_color}</b></p>',
+            unsafe_allow_html=True
+        )
 
         # Display percentage breakdown
         st.subheader("Percentage Breakdown:")
