@@ -25,78 +25,7 @@ def main():
                 "Analyze all aspects before deciding": "Blue"
             }
         },
-        {
-            "question": "My decision-making style is best described as:",
-            "options": {
-                "Quick and decisive": "Red",
-                "Optimistic and spontaneous": "Yellow",
-                "Careful and methodical": "Green",
-                "Logical and data-driven": "Blue"
-            }
-        },
-        {
-            "question": "I am motivated by:",
-            "options": {
-                "Challenges and results": "Red",
-                "Recognition and approval": "Yellow",
-                "Security and appreciation": "Green",
-                "Understanding and accuracy": "Blue"
-            }
-        },
-        {
-            "question": "I prefer to communicate:",
-            "options": {
-                "Directly and to the point": "Red",
-                "Enthusiastically and persuasively": "Yellow",
-                "Patiently and diplomatically": "Green",
-                "Precisely and formally": "Blue"
-            }
-        },
-        {
-            "question": "Under stress, I am likely to become:",
-            "options": {
-                "Impatient and demanding": "Red",
-                "Disorganized and overly talkative": "Yellow",
-                "Indecisive and overly accommodating": "Green",
-                "Critical and withdrawn": "Blue"
-            }
-        },
-        {
-            "question": "My greatest strength is:",
-            "options": {
-                "Leadership and determination": "Red",
-                "Enthusiasm and charisma": "Yellow",
-                "Supportiveness and reliability": "Green",
-                "Attention to detail and thoroughness": "Blue"
-            }
-        },
-        {
-            "question": "I handle change by:",
-            "options": {
-                "Driving it forward": "Red",
-                "Embracing it with excitement": "Yellow",
-                "Preferring stability and consistency": "Green",
-                "Analyzing its implications carefully": "Blue"
-            }
-        },
-        {
-            "question": "I value:",
-            "options": {
-                "Efficiency and achievement": "Red",
-                "Fun and interaction": "Yellow",
-                "Harmony and cooperation": "Green",
-                "Quality and accuracy": "Blue"
-            }
-        },
-        {
-            "question": "When learning something new, I prefer:",
-            "options": {
-                "Getting straight to the point": "Red",
-                "Interactive and group activities": "Yellow",
-                "A steady and supportive environment": "Green",
-                "Detailed explanations and data": "Blue"
-            }
-        },
+        # Add other questions here...
     ]
 
     scores = {"Red": 0, "Yellow": 0, "Green": 0, "Blue": 0}
@@ -104,14 +33,19 @@ def main():
     for idx, q in enumerate(questions):
         st.subheader(f"Question {idx+1}")
         st.write(q['question'])
-        
-        # Shuffle the options
-        options = list(q["options"].items())
-        random.shuffle(options)
+
+        # Use session_state to store the shuffled order
+        if f"options_{idx}" not in st.session_state:
+            options = list(q["options"].items())
+            random.shuffle(options)
+            st.session_state[f"options_{idx}"] = options
+
+        # Retrieve the consistent shuffle from session_state
+        options = st.session_state[f"options_{idx}"]
         labels = [option[0] for option in options]
         label_to_color = dict(options)
-        
-        # Updated radio with non-empty label and hidden visibility
+
+        # Updated radio with a non-empty label and hidden visibility
         option = st.radio("Choose an answer:", labels, key=f"radio_{idx}", label_visibility="hidden")
         selected_color = label_to_color[option]
         scores[selected_color] += 1
